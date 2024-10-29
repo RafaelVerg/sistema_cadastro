@@ -1,8 +1,8 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "root";
-$dbname = "sistema_cadastro";
+$password = "";
+$dbname = "pets_castro";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

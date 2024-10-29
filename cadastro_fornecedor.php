@@ -9,11 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $telefone = $_POST['telefone'];
 
     if ($id) {
-        $sql = "UPDATE fornecedores SET nome='$nome', email='$email', telefone='$telefone' WHERE id='$id'";
-        $mensagem = "Fornecedor atualizado com sucesso!";
+        $sql = "UPDATE cliente SET nome='$nome', email='$email', telefone='$telefone' WHERE id='$id'";
+        $mensagem = "Cliente atualizado com sucesso!";
     } else {
-        $sql = "INSERT INTO fornecedores (nome, email, telefone) VALUES ('$nome', '$email', '$telefone')";
-        $mensagem = "Fornecedor cadastrado com sucesso!";
+        $sql = "INSERT INTO cliente (nome, email, telefone) VALUES ('$nome', '$email', '$telefone')";
+        $mensagem = "Cliente cadastrado com sucesso!";
     }
 
     if ($conn->query($sql) !== TRUE) {
@@ -23,20 +23,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if (isset($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
-    $sql = "DELETE FROM fornecedores WHERE id='$delete_id'";
+    $sql = "DELETE FROM cliente WHERE id='$delete_id'";
     if ($conn->query($sql) === TRUE) {
-        $mensagem = "Fornecedor excluído com sucesso!";
+        $mensagem = "Cliente excluído com sucesso!";
     } else {
-        $mensagem = "Erro ao excluir fornecedor: " . $conn->error;
+        $mensagem = "Erro ao excluir Cliente: " . $conn->error;
     }
 }
 
-$fornecedores = $conn->query("SELECT * FROM fornecedores");
+$fornecedores = $conn->query("SELECT * FROM cliente");
 
 $fornecedor = null;
 if (isset($_GET['edit_id'])) {
     $edit_id = $_GET['edit_id'];
-    $fornecedor = $conn->query("SELECT * FROM fornecedores WHERE id='$edit_id'")->fetch_assoc();
+    $fornecedor = $conn->query("SELECT * FROM cliente WHERE id='$edit_id'")->fetch_assoc();
 }
 ?>
 
@@ -44,32 +44,32 @@ if (isset($_GET['edit_id'])) {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro de Fornecedor</title>
+    <title>Cadastro dos Pets</title>
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
     <div class="container">
-        <h2>Cadastro de Fornecedor</h2>
+        <h2 style="color:#4a9db4">Cadastro do Cliente</h2>
         <form method="post" action="">
             <input type="hidden" name="id" value="<?php echo $fornecedor['id'] ?? ''; ?>">
-            <label for="nome">Nome:</label>
+            <label for="nome">Nome do Dono do pet:</label>
             <input type="text" name="nome" value="<?php echo $fornecedor['nome'] ?? ''; ?>" required>
-            <label for="email">Email:</label>
+            <label for="email">email:</label>
             <input type="email" name="email" value="<?php echo $fornecedor['email'] ?? ''; ?>">
             <label for="telefone">Telefone:</label>
             <input type="text" name="telefone" value="<?php echo $fornecedor['telefone'] ?? ''; ?>">
-            <button type="submit"><?php echo $fornecedor ? 'Atualizar' : 'Cadastrar'; ?></button>
+            <button type="submit" style="background-color: #4a9db4;"><?php echo $fornecedor ? 'Atualizar' : 'Cadastrar'; ?></button>
         </form>
         <?php if (isset($mensagem)) echo "<p class='message " . ($conn->error ? "error" : "success") . "'>$mensagem</p>"; ?>
 
-        <h2>Listagem de Fornecedores</h2>
+        <h2>Listagem dos Clientes</h2>
         <table>
             <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Telefone</th>
-                <th>Ações</th>
+                <th style="color:#6AC4DE;">ID</th>
+                <th style="color:#6AC4DE;">Nome</th>
+                <th style="color:#6AC4DE;">email</th>
+                <th style="color:#6AC4DE;">Telefone</th>
+                <th style="color:#6AC4DE;">Ações</th>
             </tr>
             <?php while ($row = $fornecedores->fetch_assoc()): ?>
             <tr>

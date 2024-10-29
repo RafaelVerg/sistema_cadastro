@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usuario = $_POST['usuario'];
     $senha = md5($_POST['senha']);
 
-    $sql = "SELECT * FROM usuarios WHERE usuario='$usuario' AND senha='$senha'";
+    $sql = "SELECT * FROM funcionario WHERE funcionario='$usuario' AND senha='$senha'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -26,14 +26,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
+<img src="img/668fefbb-010b-44ab-adea-c4298fabba5b.jpg" width="200px" height="200px"> 
     <div class="container">
-        <h2>Login</h2>
+        <h2 style="color: #4a9db4;">Login</h2>
         <form method="post" action="">
             <label for="usuario">Usuário:</label>
             <input type="text" name="usuario" required>
             <label for="senha">Senha:</label>
             <input type="password" name="senha" required>
-            <button type="submit">Entrar</button>
+            <button type="submit" style="background-color: #4a9db4;">Entrar</button>
             <?php if (isset($error)) echo "<p class='message error'>$error</p>"; ?>
         </form>
     </div>
