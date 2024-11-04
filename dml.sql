@@ -31,8 +31,8 @@ values ('geovani', 'rodrigues@gmail.com', '1156748233');
 select *
 from animal;
 
-insert into animal( cliente_id, nome, descricao, raça)
-values ('3', 'amora', 'animal tem alergias', 'pinsher');
+insert into animal( cliente_id, nome, descricao, tipo, preco)
+values ('3', 'amora', 'animal tem alergias', 'pinsher', '50');
 
-insert into animal( cliente_id, nome, descricao, raça)
-values ('2', 'kiara', 'banho', 'lhasa');
+insert into animal( cliente_id, nome, descricao, tipo, preco)
+values ('2', 'kiara', 'banho', 'lhasa', '100');
