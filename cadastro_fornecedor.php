@@ -60,7 +60,7 @@ if (isset($_GET['edit_id'])) {
             <input type="text" name="telefone" value="<?php echo $fornecedor['telefone'] ?? ''; ?>">
             <button type="submit" style="background-color: #4a9db4;"><?php echo $fornecedor ? 'Atualizar' : 'Cadastrar'; ?></button>
         </form>
-        <?php if (isset($mensagem)) echo "<p class='message " . ($conn->error ? "error" : "success") . "'>$mensagem</p>"; ?>
+        <?php if (isset($mensagem)) echo "<p class='messagem' " . ($conn->error ? "error" : "success") . "'>$mensagem</p>"; ?>
 
         <h2>Listagem dos Clientes</h2>
         <table>
