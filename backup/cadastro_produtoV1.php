@@ -4,27 +4,21 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id'];
-    $nome = $_POST['nome']; // ID do cliente
-    $cliente_id = $_POST['nome']; // Definir o cliente_id a partir do nome, que é o ID do cliente
+    $nome = $_POST['nome'];
     $animal = $_POST['animal'];
     $descricao = $_POST['descricao'];
     $tipo = $_POST['tipo'];
     $preco = $_POST['preco'];
+   
+    
+    
 
     if ($id) {
         $sql = "UPDATE animal SET cliente_id='$cliente_id', animal='$animal', descricao='$descricao', tipo='$tipo', preco='$preco' WHERE id='$id'";
         $mensagem = "Pet atualizado com sucesso!";
     } else {
-        // Verificando se o cliente_id existe na tabela 'cliente'
-        $check_cliente_sql = "SELECT id FROM cliente WHERE id='$cliente_id'";
-        $result = $conn->query($check_cliente_sql);
-
-        if ($result->num_rows > 0) {
-            $sql = "INSERT INTO animal (cliente_id, animal, descricao, tipo, preco) VALUES ('$cliente_id', '$animal', '$descricao', '$tipo', '$preco')";
-            $mensagem = "Pet cadastrado com sucesso!";
-        } else {
-            $mensagem = "Erro: Cliente não encontrado!";
-        }
+        $sql = "INSERT INTO animal (cliente_id, animal, descricao, tipo, preco) VALUES ('$cliente_id', '$animal', '$descricao', '$tipo', '$preco')";
+        $mensagem = "Pet cadastrado com sucesso!";
     }
 
     if ($conn->query($sql) !== TRUE) {
@@ -43,13 +37,17 @@ if (isset($_GET['delete_id'])) {
 }
 
 $clientes = $conn->query("SELECT id, nome FROM cliente");
-$animais = $conn->query("SELECT a.animal, a.id, a.preco, a.descricao, a.tipo, c.nome FROM animal a INNER JOIN cliente c ON c.id = a.cliente_id");
+$animais = $conn->query("SELECT a.id, a.cliente_id, c.nome, a.descricao, a.tipo, a.preco, a.animal AS Dono FROM cliente c JOIN animal a ON c.id = a.cliente_id");
+
 
 $produto = null;
 if (isset($_GET['edit_id'])) {
     $edit_id = $_GET['edit_id'];
     $produto = $conn->query("SELECT id, cliente_id, animal, descricao, tipo, preco FROM animal WHERE id='$edit_id'")->fetch_assoc();
 }
+
+$clientes = $conn->query("SELECT id, nome FROM cliente");
+$animais = $conn->query("SELECT a.animal, a.id, a.preco, a.descricao, a.tipo, c.nome FROM animal a INNER JOIN cliente c ON c.id = a.cliente_id");
 ?>
 
 <!DOCTYPE html>
@@ -67,18 +65,19 @@ if (isset($_GET['edit_id'])) {
             <label for="nome">Dono do Pet:</label>
             <select name="nome" required>
                 <?php while ($row = $clientes->fetch_assoc()): ?>
-                    <option value="<?php echo $row['id']; ?>" <?php if ($produto && $produto['cliente_id'] == $row['id']) echo 'selected'; ?>><?php echo $row['nome']; ?></option>
+                    <option value="<?php echo $row['id']; ?>" <?php if ($produto && $produto['id'] == $row['id']) echo 'selected'; ?>><?php echo $row['nome']; ?></option>
                 <?php endwhile; ?>
             </select>
             <label for="animal">Nome:</label>
             <input type="text" name="animal" value="<?php echo $produto['animal'] ?? ''; ?>" required>
             <label for="descricao">Descrição do Problema do Pet:</label>
             <textarea name="descricao"><?php echo $produto['descricao'] ?? ''; ?></textarea>
-            <label for="tipo">Tipo</label>
+            <label for="tipo">tipo</label>
             <textarea name="tipo"><?php echo $produto['tipo'] ?? ''; ?></textarea>
             <label for="preco">Preço:</label>
             <input type="text" name="preco" value="<?php echo $produto['preco'] ?? ''; ?>" required>
-            <button type="submit"><?php echo $produto ? 'Atualizar' : 'Cadastrar'; ?></button>
+                     
+            <button type="submit"   ><?php echo $produto ? 'Atualizar' : 'Cadastrar'; ?></button>
         </form>
         <?php if (isset($mensagem)) echo "<p class='message " . ($conn->error ? "error" : "success") . "'>$mensagem</p>"; ?>
 
@@ -91,7 +90,10 @@ if (isset($_GET['edit_id'])) {
                 <th style="color:#6AC4DE;">Tipo</th>
                 <th style="color:#6AC4DE;">Preço</th>
                 <th style="color:#6AC4DE;">Dono do Pet</th>
+                
+
                 <th style="color:#6AC4DE;">Ações</th>
+
             </tr>
             <?php while ($row = $animais->fetch_assoc()): ?>
             <tr>
@@ -101,6 +103,7 @@ if (isset($_GET['edit_id'])) {
                 <td><?php echo $row['tipo']; ?></td>
                 <td><?php echo $row['preco']; ?></td>
                 <td><?php echo $row['nome']; ?></td>
+                            
                 <td>
                     <a href="?edit_id=<?php echo $row['id']; ?>">Editar</a>
                     <a href="?delete_id=<?php echo $row['id']; ?>" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>

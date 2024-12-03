@@ -12,7 +12,7 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
-$produtos = $conn->query("SELECT a.id, c.nome, a.descricao, a.tipo, a.preco, a.nome AS cliente FROM cliente c JOIN animal a ON c.id = a.cliente_id");
+$animais = $conn->query("SELECT a.animal, a.id, a.preco, a.descricao, a.tipo, c.nome FROM animal a INNER JOIN cliente c ON c.id = a.cliente_id");
 ?>
 
 <!DOCTYPE html>
@@ -37,13 +37,13 @@ $produtos = $conn->query("SELECT a.id, c.nome, a.descricao, a.tipo, a.preco, a.n
                 <th style="color:#6AC4DE;">Ações</th>
 
             </tr>
-            <?php while ($row = $produtos->fetch_assoc()): ?>
+            <?php while ($row = $animais->fetch_assoc()): ?>
             <tr>
                 <td><?php echo $row['id']; ?></td>
-                <td><?php echo $row['cliente']; ?></td>
+                <td><?php echo $row['animal']; ?></td>
                 <td><?php echo $row['descricao']; ?></td>
                 <td><?php echo $row['tipo']; ?></td>
-                <td><?php echo $row['preco']; ?></td>                
+                <td><?php echo $row['preco']; ?></td>
                 <td><?php echo $row['nome']; ?></td>
                 <td>
                     <a href="cadastro_produto.php?edit_id=<?php echo $row['id']; ?>">Editar</a>
